@@ -15,12 +15,9 @@ from keras.models import Sequential
 from keras.layers import Dense, Dropout, Embedding, LSTM, Bidirectional
 
 
-
-print('Loading data...')
 r = np.genfromtxt("longsword.csv", delimiter=',')
 
-print ('Start Array r:')
-#print (r)
+
 
 # TODO: add columns. If positive: 0, 32500. If negative 32500, 0. Essentially slit it into to classes for possives and negatives
 r2 = np.copy(r)
@@ -43,8 +40,7 @@ y_test = r[proportion15Percent + 1:2*proportion15Percent,0]
 x_train = r[2*proportion15Percent + 1:len(r),1:5]
 y_train = r[2*proportion15Percent + 1:len(r),0]
 
-print(len(x_train), 'train sequences (70%)')
-print(len(x_validate), 'validate sequences (15%)')
+
 print(len(x_test), 'test sequences (15%)')
 
 print('Pad sequences (samples x time)')
@@ -57,8 +53,6 @@ y_test = np.array(y_test)
 ##########
 
 from keras.models import model_from_json
-# later...
-
 # load json and create model
 json_file = open('models/bidirectionalClassLstmLongswordModel.json', 'r')
 loaded_model_json = json_file.read()
@@ -70,24 +64,11 @@ print("Loaded model from disk")
 
 # Prediction
 print('Prediction')
-
 import timeit
-#import time
-start_time = timeit.default_timer()
-# code you want to evaluate
 prediction = loaded_model.predict(x_test)
-#time.sleep(1.00)
-elapsed = timeit.default_timer() - start_time
-
-
-prediction = loaded_model.predict(x_test)
-#print(prediction)
 print('Prediction Arg max')
 predictionArgMax = np.argmax(prediction, axis=1)
-#print(predictionArgMax)
 print('Expected')
-#print(y_test)
-print ('Prediction execution time: ', elapsed * 1000, 'ms')
 print ('Classification Accuracy: ', ((predictionArgMax == y_test).sum() * 100.0) / (1.0 * len(y_test)), '%')
 
 app = Flask(__name__)
@@ -96,19 +77,18 @@ api = Api(app)
 class Predict(Resource):
     def put(self):
         dataRow = request.form['data']
-	dataRow = r[1:2,1:5]	
+	dataRow = r[1:2,1:5]
+	#dataRow = np.array([  0,  868,   0,  249])	
 	print('DataRow: ', dataRow)
 	start_time = timeit.default_timer()
 	prediction = loaded_model.predict(dataRow)
 	elapsed = timeit.default_timer() - start_time
 	print('Prediction: ', prediction)
 	predictionArgMax = np.argmax(prediction, axis=1)
-	print('Prediction arg max: ', predictionArgMax)
-	# TODO: elapsed
+	print('Prediction arg max: ', predictionArgMax)	
         return { 'predictedClass': predictionArgMax[0], 'accuracy': str(prediction[0, predictionArgMax[0]]), 'elapsed': elapsed * 1000 }
 
 api.add_resource(Predict, '/predict')
 
 if __name__ == '__main__':
     app.run(debug=True)
-
