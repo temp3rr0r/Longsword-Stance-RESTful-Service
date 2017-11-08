@@ -14,17 +14,6 @@ class Predict(Resource):
     def post(self):
 
 	json_data = request.get_json(force=True)
-	print("json_data", json_data)
-        dataRow = json_data['row']
-	
-	#dataRow = request.form['row']
-
-#	dataRow = request.get_json()
-#	print("d1:", request.form['row'])
-#	print("d2:", request.form.get("row"))
-#	print("d3:", request.get_json())	
-#	print('dataRow:', dataRow)
-
 
 	# Load model
 	json_file = open('models/bidirectionalClassLstmLongswordModel.json', 'r')
@@ -34,8 +23,7 @@ class Predict(Resource):
 	loaded_model.load_weights("models/bidirectionalClassLstmLongswordModelWeights.h5")
 
 	# Input data
-	x_test = np.array([dataRow])
-	print('DataRow', dataRow)
+	x_test = np.array([json_data['row']])
 
 	# Predict
 	start_time = timeit.default_timer()

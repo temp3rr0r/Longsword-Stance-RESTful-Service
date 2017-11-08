@@ -1,0 +1,67 @@
+
+130 validate sequences (15%)
+129 test sequences (15%)
+Pad sequences (samples x time)
+x_train shape: (608, 4)
+x_test shape: (129, 4)
+Loaded model from disk
+Prediction
+Prediction Arg max
+Expected
+Prediction execution time:  1053.33590508 ms
+Classification Accuracy:  73.6434108527 %
+root@ip-172-31-18-188:/home/ubuntu/longswordKerasModel# nano kerasRunner.py
+root@ip-172-31-18-188:/home/ubuntu/longswordKerasModel# python kerasRunner.py
+Using TensorFlow backend.
+2017-11-07 01:40:12.767646: I tensorflow/core/platform/cpu_feature_guard.cc:137] Your CPU supports instructions that this TensorFlow binary was not compiled to use: SSE4.1 SSE4.2 AVX AVX2 FMA
+Loading data...
+Start Array r:
+608 train sequences (70%)
+130 validate sequences (15%)
+129 test sequences (15%)
+Pad sequences (samples x time)
+x_train shape: (608, 4)
+x_test shape: (129, 4)
+Loaded model from disk
+Prediction
+Prediction Arg max
+Expected
+Prediction execution time:  52.6089668274 ms
+Classification Accuracy:  73.6434108527 %
+root@ip-172-31-18-188:/home/ubuntu/longswordKerasModel# ls
+kerasRunner.py  longsword.csv  longsword.csv.bak  models
+root@ip-172-31-18-188:/home/ubuntu/longswordKerasModel# clear && ls
+kerasRunner.py  longsword.csv  longsword.csv.bak  models
+root@ip-172-31-18-188:/home/ubuntu/longswordKerasModel# pip install flask
+Collecting flask
+/usr/local/lib/python2.7/dist-packages/pip/_vendor/requests/packages/urllib3/util/ssl_.py:318: SNIMissingWarning: An HTTPS request has been made, but the SNI (Subject Name Indication) extension to TLS is not available on this platform. This may cause the server to present an incorrect TLS certificate, which can cause validation failures. You can upgrade to a newer version of Python to solve this. For more information, see https://urllib3.readthedocs.io/en/latest/security.html#snimissingwarning.
+  SNIMissingWarning
+/usr/local/lib/python2.7/dist-packages/pip/_vendor/requests/packages/urllib3/util/ssl_.py:122: InsecurePlatformWarning: A true SSLContext object is not available. This prevents urllib3 from configuring SSL appropriately and may cause certain SSL connections to fail. You can upgrade to a newer version of Python to solve this. For more information, see https://urllib3.readthedocs.io/en/latest/security.html#insecureplatformwarning.
+  InsecurePlatformWarning
+  Downloading Flask-0.12.2-py2.py3-none-any.whl (83kB)
+    100% |████████████████████████████████| 92kB 2.7MB/s
+Collecting itsdangerous>=0.21 (from flask)
+  Downloading itsdangerous-0.24.tar.gz (46kB)
+    100% |████████████████████████████████| 51kB 4.3MB/s
+Collecting click>=2.0 (from flask)
+  Downloading click-6.7-py2.py3-none-any.whl (71kB)
+    100% |████████████████████████████████| 71kB 3.9MB/s
+Requirement already satisfied: Werkzeug>=0.7 in /usr/local/lib/python2.7/dist-packages (from flask)
+Collecting Jinja2>=2.4 (from flask)
+  Downloading Jinja2-2.9.6-py2.py3-none-any.whl (340kB)
+    100% |████████████████████████████████| 348kB 3.4MB/s
+Collecting MarkupSafe>=0.23 (from Jinja2>=2.4->flask)
+  Downloading MarkupSafe-1.0.tar.gz
+Building wheels for collected packages: itsdangerous, MarkupSafe
+  Running setup.py bdist_wheel for itsdangerous ... done
+  Stored in directory: /root/.cache/pip/wheels/fc/a8/66/24d655233c757e178d45dea2de22a04c6d92766abfb741129a
+  Running setup.py bdist_wheel for MarkupSafe ... done
+  Stored in directory: /root/.cache/pip/wheels/88/a7/30/e39a54a87bcbe25308fa3ca64e8ddc75d9b3e5afa21ee32d57
+Successfully built itsdangerous MarkupSafe
+Installing collected packages: itsdangerous, click, MarkupSafe, Jinja2, flask
+Successfully installed Jinja2-2.9.6 MarkupSafe-1.0 click-6.7 flask-0.12.2 itsdangerous-0.24
+root@ip-172-31-18-188:/home/ubuntu/longswordKerasModel# ls
+kerasRunner.py  longsword.csv  longsword.csv.bak  models
+root@ip-172-31-18-188:/home/ubuntu/longswordKerasModel# nano flaskRestfulService.py
+  GNU nano 2.2.6                                                    File: flaskRestfulService.py
+
