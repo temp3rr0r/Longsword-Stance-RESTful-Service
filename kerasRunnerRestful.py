@@ -1,6 +1,6 @@
 from __future__ import print_function
-from flask import Flask, request
-from flask_restful import Resource, Api
+from flask import Flask, request, jsonify
+from flask_restful import Resource, Api, abort, reqparse
 import numpy as np
 from keras.models import model_from_json
 import timeit
@@ -11,8 +11,20 @@ app = Flask(__name__)
 api = Api(app)
 
 class Predict(Resource):
-    def put(self):
-        dataRow = request.form['data']
+    def post(self):
+
+	json_data = request.get_json(force=True)
+	print("json_data", json_data)
+        dataRow = json_data['row']
+	
+	#dataRow = request.form['row']
+
+#	dataRow = request.get_json()
+#	print("d1:", request.form['row'])
+#	print("d2:", request.form.get("row"))
+#	print("d3:", request.get_json())	
+#	print('dataRow:', dataRow)
+
 
 	# Load model
 	json_file = open('models/bidirectionalClassLstmLongswordModel.json', 'r')
@@ -22,7 +34,8 @@ class Predict(Resource):
 	loaded_model.load_weights("models/bidirectionalClassLstmLongswordModelWeights.h5")
 
 	# Input data
-	x_test = np.array([json.loads(dataRow)["row"]])
+	x_test = np.array([dataRow])
+	print('DataRow', dataRow)
 
 	# Predict
 	start_time = timeit.default_timer()
@@ -34,4 +47,4 @@ class Predict(Resource):
 api.add_resource(Predict, '/predict')
 
 if __name__ == '__main__':
-     app.run()
+     app.run(host='0.0.0.0')
