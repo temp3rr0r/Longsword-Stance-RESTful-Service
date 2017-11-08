@@ -38,14 +38,17 @@ class Predict(Resource):
 	r = np.insert(r, 5, values=r2[:,5], axis=1)
 	x_test = r
 
-	#print("x_test", x_test)
+	print("x_test", x_test)
 
 	# Predict
 	start_time = timeit.default_timer()
 	prediction = loaded_model.predict(x_test)
 	elapsed = timeit.default_timer() - start_time
 	predictionArgMax = np.argmax(prediction, axis=1)
-        return { 'predictedClass': predictionArgMax[0], 'confidence': float(prediction[0, predictionArgMax[0]]), 'elapsedMilliseconds': elapsed * 1000 }
+
+        response =  { 'predictedClass': predictionArgMax[0], 'confidence': float(prediction[0, predictionArgMax[0]]), 'elapsedMilliseconds': elapsed * 1000 }
+	print (response)
+	return response
 
 api.add_resource(Predict, '/predict')
 
