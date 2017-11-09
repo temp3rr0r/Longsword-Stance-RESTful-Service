@@ -40,7 +40,7 @@ class Predict(Resource):
 	r = np.insert(r, 5, values=r2[:,5], axis=1)
 	x_test = r	
 
-	print("x_test", x_test)
+	#print("x_test", x_test)
 
 	# Predict
 	start_time = timeit.default_timer()
