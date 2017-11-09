@@ -20,15 +20,15 @@ class KerasModel:
 	return self.loaded_model.predict(data)
 
 kerasModel = KerasModel()
+
 # Setup socket connection
 TCP_IP = '127.0.0.1'
 TCP_PORT = 5001
 BUFFER_SIZE = 1024
-#MESSAGE = "{ Class: 0, confidence: 0.9 }"
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-#s.close()
 s.connect((TCP_IP, TCP_PORT))
 
+verbose = False
 
 class Predict(Resource):
     def post(self):
@@ -59,13 +59,10 @@ class Predict(Resource):
 	predictionArgMax = np.argmax(prediction, axis=1)
 
         response =  { 'predictedClass': predictionArgMax[0], 'confidence': float(prediction[0, predictionArgMax[0]]), 'elapsedMilliseconds': elapsed * 1000 }
-	print (response)
+	if verbose == True:
+		print (response)
 
-	#s.connect((TCP_IP, TCP_PORT))
 	s.send(str(response))
-	#data = s.recv(BUFFER_SIZE) # don't accept pong for now
-	#s.close()
-
 	return response
 
 api.add_resource(Predict, '/predict')
