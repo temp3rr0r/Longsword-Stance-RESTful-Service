@@ -64,8 +64,8 @@ class Predict(Resource):
 	if verbose == True:
 		print ("x_test: ", x_test)
 		print (response)
+		print(json_data)
 
-	print(json_data)
 	s.send(json.dumps(json_data)) # Send socket response
 	return response # Send response to lambda
 
