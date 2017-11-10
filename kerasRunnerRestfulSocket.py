@@ -65,7 +65,8 @@ class Predict(Resource):
 		print ("x_test: ", x_test)
 		print (response)
 
-	s.send(str(response)) # Send socket response
+	print(json_data)
+	s.send(json.dumps(json_data)) # Send socket response
 	return response # Send response to lambda
 
 api.add_resource(Predict, '/predict')
