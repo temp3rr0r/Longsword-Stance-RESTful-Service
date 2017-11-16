@@ -6,6 +6,7 @@ from keras.models import model_from_json
 import timeit
 import json
 import socket
+from sklearn.metrics import confusion_matrix
 
 # Flask
 app = Flask(__name__)
@@ -34,9 +35,14 @@ s.connect((TCP_IP, TCP_PORT))
 
 verbose = False
 
+yExpected = []
+yPredicted = []
+confusionMatrix = []
+classAccuracy = []
+
 class Predict(Resource):
     def post(self):
-
+	start_time = timeit.default_timer() # TODO: temp
 	json_data = request.get_json(force=True)
 	
 	# Input data
@@ -54,20 +60,30 @@ class Predict(Resource):
 	r = np.insert(r, 5, values=r2[:,5], axis=1)
 	x_test = r	
 
-	# Predict
-	start_time = timeit.default_timer()
+	# Predict	
 	prediction  = kerasModel.predict(x_test)
-	elapsed = timeit.default_timer() - start_time
 	predictionArgMax = np.argmax(prediction, axis=1)        
       	json_data['predictedClass']= predictionArgMax[0]
 	json_data['confidence'] = float(prediction[0, predictionArgMax[0]])
+	elapsed = timeit.default_timer() - start_time # TODO: temp
 	response =  { 'predictedClass': predictionArgMax[0], 'confidence': float(prediction[0, predictionArgMax[0]]), 'elapsedMilliseconds': elapsed * 1000 }
 	if verbose == True:
 		print ("x_test: ", x_test)
 		print (response)	
 		print(json_data)	
 	
-	s.send(json.dumps(json_data)) # Send socket response
+	# TODO: calc confusion matrix
+	yExpected.append(0)
+	yPredicted.append(predictionArgMax[0])
+	confusionMatrix = confusion_matrix(yExpected, yPredicted)
+	# TODO: add results to json data
+	rowSums = np.sum(confusionMatrix, axis = 1)
+	diagonal = confusionMatrix.diagonal(0)
+	classAccuracy = np.multiply(1/rowSums.astype(float), diagonal).astype(float)
+	json_data['classAccuracy'] = classAccuracy # TODO: add class accuracy to json
+	
+
+	s.send(json.dumps(json_data)) # Send socket response	
 	return response # Send response to lambda # TODO: disable response for speed?
 
 api.add_resource(Predict, '/predict')
