@@ -46,7 +46,8 @@ class Predict(Resource):
 	json_data = request.get_json(force=True)
 	
 	# Input data
-	x_test = np.array([json_data['row']])	
+	x_test = np.array([json_data['row']])
+	y_expected = json_data['classification']
 	r = x_test
 	r2 = np.copy(r)
 	r[r < 0] = 0
@@ -73,14 +74,16 @@ class Predict(Resource):
 		print(json_data)	
 	
 	# TODO: calc confusion matrix
-	yExpected.append(0)
+	yExpected.append(y_expected)
 	yPredicted.append(predictionArgMax[0])
-	confusionMatrix = confusion_matrix(yExpected, yPredicted)
-	# TODO: add results to json data
-	rowSums = np.sum(confusionMatrix, axis = 1)
-	diagonal = confusionMatrix.diagonal(0)
-	classAccuracy = np.multiply(1/rowSums.astype(float), diagonal).astype(float)
-	json_data['classAccuracy'] = classAccuracy # TODO: add class accuracy to json
+	if (len(yPredicted) > 0):
+		confusionMatrix = confusion_matrix(yExpected, yPredicted)
+		# TODO: add results to json data
+		rowSums = np.sum(confusionMatrix, axis = 1)
+		diagonal = confusionMatrix.diagonal(0)
+		classAccuracy = np.multiply(np.reciprocal(rowSums).astype(float), diagonal).astype(float)
+		json_data['classAccuracy'] = classAccuracy.tolist() # TODO: add class accuracy to json
+		json_data['classAccuracy'] = [0.7, 0.8, 0.6, 0.9 ]# test
 	
 
 	s.send(json.dumps(json_data)) # Send socket response	
