@@ -58,12 +58,31 @@ class Predict(Resource):
 	r[r < 0] = 0
 	r2[r2 > 0] = 0
 	r2 *= -1
-	r = np.insert(r, 0, values=r2[:,0], axis=1)        
-	r = np.insert(r, 1, values=r2[:,1], axis=1)
-	r = np.insert(r, 2, values=r2[:,2], axis=1)
-	r = np.insert(r, 3, values=r2[:,3], axis=1)
-	r = np.insert(r, 4, values=r2[:,4], axis=1)
-	r = np.insert(r, 5, values=r2[:,5], axis=1)
+	#r = np.insert(r, 0, values=r2[:,0], axis=1)        
+	#r = np.insert(r, 1, values=r2[:,1], axis=1)
+	#r = np.insert(r, 2, values=r2[:,2], axis=1)
+	#r = np.insert(r, 3, values=r2[:,3], axis=1)
+	#r = np.insert(r, 4, values=r2[:,4], axis=1)
+	#r = np.insert(r, 5, values=r2[:,5], axis=1)
+
+	r = np.insert(r, 0, values=r2[:,0], axis=1) # inser2t values befor2e column 3
+	r = np.insert(r, 1, values=r2[:,1], axis=1) # inser2t values befor2e column 3
+	r = np.insert(r, 2, values=r2[:,2], axis=1) # inser2t values befor2e column 3
+	r = np.insert(r, 3, values=r2[:,3], axis=1) # inser2t values befor2e column 3
+	r = np.insert(r, 4, values=r2[:,4], axis=1) # inser2t values befor2e column 3
+	r = np.insert(r, 5, values=r2[:,5], axis=1) # inser2t values befor2e column 3
+	r = np.insert(r, 6, values=r2[:,6], axis=1) # inser2t values befor2e column 3
+	r = np.insert(r, 7, values=r2[:,7], axis=1) # inser2t values befor2e column 3
+	r = np.insert(r, 8, values=r2[:,8], axis=1) # inser2t values befor2e column 3
+	r = np.insert(r, 9, values=r2[:,9], axis=1) # inser2t values befor2e column 3
+	r = np.insert(r, 10, values=r2[:,10], axis=1) # inser2t values befor2e column 3
+	r = np.insert(r, 11, values=r2[:,11], axis=1) # inser2t values befor2e column 3
+	r = np.insert(r, 12, values=r2[:,12], axis=1) # inser2t values befor2e column 3
+	r = np.insert(r, 13, values=r2[:,13], axis=1) # inser2t values befor2e column 3
+	r = np.insert(r, 14, values=r2[:,14], axis=1) # inser2t values befor2e column 3
+	r = np.insert(r, 15, values=r2[:,15], axis=1) # inser2t values befor2e column 3
+	r = np.insert(r, 16, values=r2[:,16], axis=1) # inser2t values befor2e column 3
+	#r = np.insert(r, 17, values=r2[:,17], axis=1) # inser2t values befor2e column 3
 	x_test = r	
 
 	# Predict	
