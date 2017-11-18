@@ -8,6 +8,7 @@ import json
 import socket
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import f1_score
+from sklearn.metrics import accuracy_score
 
 # Flask
 app = Flask(__name__)
@@ -80,14 +81,24 @@ class Predict(Resource):
 	if (len(yPredicted) > 0):
 		confusionMatrix = confusion_matrix(yExpected, yPredicted)
 		# TODO: add results to json data
-		rowSums = np.sum(confusionMatrix, axis = 1)
-		diagonal = confusionMatrix.diagonal(0)
-		classAccuracy = np.multiply(np.reciprocal(rowSums).astype(float), diagonal).astype(float)		
-		emptyArray = [0.0] * 7
-		#json_data['classAccuracy'] = [0.0, 0.8, 0.6, 0.9, 0.0 ]# test
+		#rowSums = np.sum(confusionMatrix, axis = 1)
+		#diagonal = confusionMatrix.diagonal(0)
+		#classAccuracy = np.multiply(np.reciprocal(rowSums).astype(float), diagonal).astype(float)		
 		#json_data['classAccuracy'] = np.add(classAccuracy, emptyArray).tolist() # TODO: add class accuracy to json
-		json_data['classAccuracy'] = f1_score(yExpected, yPredicted, average = None) # TODO: rename to f1_score
-	
+		
+		classAccuracyOut = [0.0] * 7
+		f1ScoresOut = [0.0] * 7
+		
+		classAccuracy = f1_score(yExpected, yPredicted, average = None)
+		f1Scores = f1_score(yExpected, yPredicted, average = None)
+
+		for i in range(len(f1Scores)):
+			f1ScoresOut[i] = f1ScoresOut[i] + f1Scores[i]
+			classAccuracyOut[i] = classAccuracyOut[i] + classAccuracy[i]
+
+		json_data['classAccuracy'] = classAccuracyOut
+		json_data['f1Scores'] = f1ScoresOut
+		json_data['accuracyScore'] = accuracy_score(yExpected, yPredicted)
 
 	s.send(json.dumps(json_data)) # Send socket response	
 	return response # Send response to lambda # TODO: disable response for speed?
