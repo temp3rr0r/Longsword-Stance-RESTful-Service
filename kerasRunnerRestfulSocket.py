@@ -81,20 +81,25 @@ class Predict(Resource):
 	if (len(yPredicted) > 0):
 		confusionMatrix = confusion_matrix(yExpected, yPredicted)
 		# TODO: add results to json data
-		#rowSums = np.sum(confusionMatrix, axis = 1)
-		#diagonal = confusionMatrix.diagonal(0)
-		#classAccuracy = np.multiply(np.reciprocal(rowSums).astype(float), diagonal).astype(float)		
+		rowSums = np.sum(confusionMatrix, axis = 1)
+		diagonal = confusionMatrix.diagonal(0)
+		classAccuracy = np.multiply(np.reciprocal(rowSums).astype(float), diagonal).astype(float)		
 		#json_data['classAccuracy'] = np.add(classAccuracy, emptyArray).tolist() # TODO: add class accuracy to json
 		
 		classAccuracyOut = [0.0] * 7
 		f1ScoresOut = [0.0] * 7
 		
-		classAccuracy = f1_score(yExpected, yPredicted, average = None)
+		#classAccuracy = f1_score(yExpected, yPredicted, average = None)
 		f1Scores = f1_score(yExpected, yPredicted, average = None)
 
 		for i in range(len(f1Scores)):
 			f1ScoresOut[i] = f1ScoresOut[i] + f1Scores[i]
 			classAccuracyOut[i] = classAccuracyOut[i] + classAccuracy[i]
+
+		print("yExpected: " + str(yExpected))
+		print("yPredicted: " + str(yPredicted))
+		print("f1Scores: " + str(f1Scores))
+		print("classAccuracy: " + str(classAccuracy))
 
 		json_data['classAccuracy'] = classAccuracyOut
 		json_data['f1Scores'] = f1ScoresOut
