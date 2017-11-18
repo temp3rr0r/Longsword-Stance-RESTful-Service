@@ -7,6 +7,7 @@ import timeit
 import json
 import socket
 from sklearn.metrics import confusion_matrix
+from sklearn.metrics import f1_score
 
 # Flask
 app = Flask(__name__)
@@ -81,9 +82,11 @@ class Predict(Resource):
 		# TODO: add results to json data
 		rowSums = np.sum(confusionMatrix, axis = 1)
 		diagonal = confusionMatrix.diagonal(0)
-		classAccuracy = np.multiply(np.reciprocal(rowSums).astype(float), diagonal).astype(float)
-		json_data['classAccuracy'] = classAccuracy.tolist() # TODO: add class accuracy to json
-		json_data['classAccuracy'] = [0.7, 0.8, 0.6, 0.9 ]# test
+		classAccuracy = np.multiply(np.reciprocal(rowSums).astype(float), diagonal).astype(float)		
+		emptyArray = [0.0] * 7
+		#json_data['classAccuracy'] = [0.0, 0.8, 0.6, 0.9, 0.0 ]# test
+		#json_data['classAccuracy'] = np.add(classAccuracy, emptyArray).tolist() # TODO: add class accuracy to json
+		json_data['classAccuracy'] = f1_score(yExpected, yPredicted, average = None) # TODO: rename to f1_score
 	
 
 	s.send(json.dumps(json_data)) # Send socket response	
