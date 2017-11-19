@@ -46,6 +46,12 @@ confusionMatrix = []
 classAccuracy = []
 
 class Predict(Resource):
+
+    lastScores = { 'data': 'no data yet' }
+
+    def get(self):
+	return json.dumps(Predict.lastScores)
+
     def post(self):
 	start_time = timeit.default_timer() # TODO: temp
 	json_data = request.get_json(force=True)
@@ -127,6 +133,8 @@ class Predict(Resource):
 		json_data['classAccuracy'] = classAccuracyOut
 		json_data['f1Scores'] = f1ScoresOut
 		json_data['accuracyScore'] = accuracy_score(yExpected, yPredicted)
+
+	Predict.lastScores = json_data # Store the last data globally for the GET method
 
 	s.send(json.dumps(json_data)) # Send socket response	
 	return response # Send response to lambda # TODO: disable response for speed?
