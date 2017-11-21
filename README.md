@@ -1,5 +1,7 @@
 # Longsword Stance RESTful Service #
 
+Working demo: https://www.youtube.com/watch?v=v7hvOyPQ0EM
+
 Longsword Stance RESTful Service: Invokes prediction results with real-time multivariate time series data. Using Flask and python, the pre-trained bidirectional LSTM deep learning model is loaded to memory. RESTful post request containing real-time rows of IMU data can be used to classify the longsword movement stance. Information on the classification confidence and execution time in milliseconds is also provided.
 
 ## Technologies
