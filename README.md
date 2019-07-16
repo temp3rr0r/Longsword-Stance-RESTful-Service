@@ -6,7 +6,7 @@ Longsword Stance RESTful Service: Invokes prediction results with real-time mult
 
 ## Technologies
 - Deep Learning
-- Bidirection Long-Short Term Memory (LSTM)
+- Bidirectional Long-Short Term Memory (LSTM)
 
 ## Hardware
 - Nvidia Jetson TX2
